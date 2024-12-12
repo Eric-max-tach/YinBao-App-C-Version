@@ -1,0 +1,8 @@
+yinbao:
+  platformName: Android
+  platformVersion: '9'
+  deviceName: emulator-5554
+  appPackage: com.android.settings
+  appActivity: com.android.settings.Settings
+  remoteurl: "http://localhost:4723/wd/hub"
+  noReset: true
