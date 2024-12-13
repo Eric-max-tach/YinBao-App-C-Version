@@ -68,5 +68,45 @@ namespace appiumtest.Page
             IWebElement ele = get_exists_element(LoginInPageLocators.Toast, driver);
             return ele.Text;
         }
+
+        public static void ExperienceLoginBtn(AndroidDriver driver)
+        {
+            /*
+                体验账号按钮点击
+             */
+            logger.Info("==========experience_login_btn==========");
+            IWebElement ele = get_exists_element(LoginInPageLocators.ExperienceLoginBtn, driver);
+            ele.Click();
+        }
+
+        public static void FreeRegisterBtn(AndroidDriver driver)
+        {
+            /*
+                免费注册按钮点击
+             */
+            logger.Info("==========free_register_btn==========");
+            IWebElement ele = get_exists_element(LoginInPageLocators.FreeRegisterBtn, driver);
+            ele.Click();
+        }
+
+        public static void ContactServiceBtn(AndroidDriver driver)
+        {
+            /*
+                联系客服按钮点击
+             */
+            logger.Info("==========contact_service_btn==========");
+            IWebElement ele = get_exists_element(LoginInPageLocators.ContactServiceBtn, driver);
+            ele.Click();
+        }
+
+        public static void AccountAndNumberLoginBtn(AndroidDriver driver)
+        {
+            /*
+                账号+工号登录按钮点击
+             */
+            logger.Info("==========account_and_number_login_btn==========");
+            IWebElement ele = get_exists_element(LoginInPageLocators.AccountAndNumberLoginBtn, driver);
+            ele.Click();
+        }
     }
 }
