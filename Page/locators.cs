@@ -36,5 +36,17 @@ namespace appiumtest.Page
 
         // “账号登录”按钮
         public static By AccountLoginBtn => By.Id("cn.pospal.www.pospal_pos_android_new.pospal:id/login_btn");
+
+        // “体验登录”按钮
+        public static By ExperienceLoginBtn => By.Id("cn.pospal.www.pospal_pos_android_new.pospal:id/try_tv");
+
+        // “免费注册”按钮
+        public static By FreeRegisterBtn => By.Id("cn.pospal.www.pospal_pos_android_new.pospal:id/regist_tv");
+
+        // “联系客服”按钮
+        public static By ContactServiceBtn => By.Id("cn.pospal.www.pospal_pos_android_new.pospal:id/contact_customer_service_ll");
+
+        // “账号+工号登录”按钮
+        public static By AccountAndNumberLoginBtn => By.Id("cn.pospal.www.pospal_pos_android_new.pospal:id/account_cashier_login_ll");
     }
 }
