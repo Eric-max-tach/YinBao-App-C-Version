@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace appiumtest.testcase
 {
-    public class TestLogin : StartEnd
+    public class TestLogin_1_1 : StartEnd
     {
         // 使用从CSV读取的数据进行测试
         [Test, TestCaseSource(typeof(LoginTestData), nameof(LoginTestData.GetTestData))]
         public void TestLoginFuc(string username, string password)
         {
-            logger.Info("==========test_login==========");
+            logger.Info("==========test_login_1_1==========");
 
             // 在登录页面的账号输入框中输入用户名
             LoginInPageOpn.InputUsername(username, _driver);

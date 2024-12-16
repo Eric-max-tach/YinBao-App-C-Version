@@ -12,7 +12,7 @@ namespace appiumtest.bases
 {
     public class BasePage: Object
     {
-        public static IWebElement get_exists_element(By locator, AndroidDriver driver, int timeout = 1)
+        public static IWebElement get_exists_element(By locator, AndroidDriver driver, IWebElement parent_element = null, int timeout = 1)
         {
             /*
              *  检查元素是否存在于 DOM 中，但不关心它是否可见，在元素定位的时候添加显式等待功能
@@ -20,25 +20,107 @@ namespace appiumtest.bases
              * :param int timeout: 超时时间，单位秒
              */
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeout));
-
-            try
+            if (parent_element == null)
             {
-                // 使用自定义的 By 定位方法
-                IWebElement element = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementExists(locator));
-                return element;
+                try
+                {
+                    // 使用自定义的 By 定位方法
+                    return wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementExists(locator));
+                }
+                catch (Exception e)
+                {
+                    // 生成元素未找到的截图信息
+                    generate_screenshot(1, driver);
+
+                    Console.WriteLine(e.Message);
+                    Console.WriteLine("元素未找到，请检查定位器是否正确或页面是否存在该元素");
+                    return null;
+                }
             }
-            catch (Exception e)
+            else
             {
-                // 生成元素未找到的截图信息
-                generate_screenshot(1, driver);
+                try
+                {
+                    // 使用自定义的 By 定位方法
+                    // 在父级元素范围内查找子元素
+                    return wait.Until(_ =>
+                             parent_element.FindElement(locator));
+                    
+                }
+                catch (Exception e)
+                {
+                    // 生成元素未找到的截图信息
+                    generate_screenshot(1, driver);
 
-                Console.WriteLine(e.Message);
-                Console.WriteLine("元素未找到，请检查定位器是否正确或页面是否存在该元素");
-                return null;
+                    Console.WriteLine(e.Message);
+                    Console.WriteLine("元素未找到，请检查定位器是否正确或页面是否存在该元素");
+                    return null;
+                }
             }
         }
 
-        public IWebElement get_visible_element(By locator, int timeout, AndroidDriver driver)
+        public static IWebElement get_visible_element_need_exception(By locator, AndroidDriver driver, IWebElement parent_element = null, int timeout = 1, int need_screenshot = 1)
+        {
+            /*
+             * 该方法会返回异常信息
+            获取存在，但不一定可见的元素，在元素定位的时候添加显式等待功能
+            :param locator: By方法定位元素，如（By.XPATH, "//*[@class='frank]"）
+            :param timeout:
+            :param element: 通过所提供的元素查找该元素的子元素
+            :param need_screenshot: 判断是否出现异常时需要截图，默认值为1，表示需要异常截图。0表示不需要异常截图
+            :return: 返回存在，但不一定可见的元素
+            */
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeout));
+            if (parent_element == null)
+            {
+                try
+                {
+                    // 使用自定义的 By 定位方法
+                    return wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementExists(locator));
+                }
+                catch (Exception e)
+                {
+                    if (need_screenshot == 1)
+                    {
+                        // 生成元素未找到的截图信息
+                        generate_screenshot(1, driver);
+
+                        Console.WriteLine(e.Message);
+                        Console.WriteLine("元素未找到，请检查定位器是否正确或页面是否存在该元素");
+                    }
+
+                    throw e;
+                }
+            }
+            else
+            {
+                try
+                {
+                    // 使用自定义的 By 定位方法
+                    // 在父级元素范围内查找子元素
+                    return wait.Until(_ =>
+                             parent_element.FindElement(locator));
+
+                }
+                catch (Exception e)
+                {
+                    if (need_screenshot == 1)
+                    {
+                        // 生成元素未找到的截图信息
+                        generate_screenshot(1, driver);
+
+                        Console.WriteLine(e.Message);
+                        Console.WriteLine("元素未找到，请检查定位器是否正确或页面是否存在该元素");
+                    }
+
+                    throw e;
+                }
+            }
+
+
+        }
+
+        public static IWebElement get_visible_element(By locator, AndroidDriver driver, int timeout = 1)
         {
             /*
              *  检查元素是否可见，通常用于确保元素可以与用户交互，在元素定位的时候添加显式等待功能
@@ -63,7 +145,7 @@ namespace appiumtest.bases
             }
         }
 
-        public IWebElement get_clickable_element(By locator, int timeout, AndroidDriver driver)
+        public static IWebElement get_clickable_element(By locator, int timeout, AndroidDriver driver)
         {
             /*
              *  检查元素是否可点击，在元素定位的时候添加显式等待功能
@@ -88,7 +170,7 @@ namespace appiumtest.bases
             }
         }
 
-        public static IList<IWebElement> get_exists_elements(By locator, int timeout, AndroidDriver driver)
+        public static IList<IWebElement> get_exists_elements(By locator, AndroidDriver driver, int timeout = 1)
         {
             /*
              *  获取一组存在的元素，但不一定可见，在元素定位的时候添加显式等待功能
@@ -113,7 +195,7 @@ namespace appiumtest.bases
             }
         }
 
-        public void swipe_screen(double startX, double startY, double endX, double endY, AndroidDriver driver, double duration = 1)
+        public static void swipe_screen(double startX, double startY, double endX, double endY, AndroidDriver driver, double duration = 1)
         {
             /*
                 屏幕滑动
