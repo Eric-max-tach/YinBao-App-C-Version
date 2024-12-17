@@ -86,10 +86,10 @@ namespace appiumtest.bases
                         generate_screenshot(1, driver);
 
                         Console.WriteLine(e.Message);
-                        Console.WriteLine("元素未找到，请检查定位器是否正确或页面是否存在该元素");
+                        Console.WriteLine("11111元素未找到，请检查定位器是否正确或页面是否存在该元素");
                     }
 
-                    throw e;
+                    throw new NoSuchElementException();
                 }
             }
             else
@@ -110,10 +110,10 @@ namespace appiumtest.bases
                         generate_screenshot(1, driver);
 
                         Console.WriteLine(e.Message);
-                        Console.WriteLine("元素未找到，请检查定位器是否正确或页面是否存在该元素");
+                        Console.WriteLine("222222元素未找到，请检查定位器是否正确或页面是否存在该元素");
                     }
 
-                    throw e;
+                    throw new NoSuchElementException();
                 }
             }
 
@@ -239,7 +239,7 @@ namespace appiumtest.bases
             }
         }
 
-        public void click_screen(double startX, double startY, AndroidDriver driver, double duration = 0.5)
+        public static void click_screen(double startX, double startY, AndroidDriver driver, double duration = 0.5)
         {
             /*
                 屏幕点击

@@ -29,6 +29,27 @@ namespace appiumtest.common
             }
         }
 
+        public static void AssertNotEqual(dynamic expected, dynamic actual, AndroidDriver driver)
+        {
+            /*
+             * 自定义断言方法，用于判断两个变量是否不相等，并提供截图功能
+             */
+            try
+            {
+                Assert.That(actual, Is.Not.EqualTo(expected));
+            }
+            catch (AssertionException ex)
+            {
+                // 这里可以执行截图、日志记录等操作
+                Console.WriteLine($"Assertion failed: {ex.Message}");
+
+                // 调用基类的方法生成截图
+                BasePage.generate_screenshot(3, driver, "AssertEqualFaied");
+
+                //throw; // 重新抛出异常
+            }
+        }
+
         public static void AssertInRange(dynamic value, dynamic lower_limit, dynamic upper_limit, AndroidDriver driver)
         {
             /*
