@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NLog;
 
 namespace appiumtest.Page
 {
@@ -33,6 +34,7 @@ namespace appiumtest.Page
 
     class NotAvailableCouponPageScenario : BasePage
     {
+        public static NLog.Logger logger = LogManager.GetLogger("Mylogger");
         /*
          * 定义了不可用优惠券页面相关的场景
          */
@@ -70,15 +72,20 @@ namespace appiumtest.Page
                 for (int i = 0; i < couponNumberElements.Count; i++)
                 {
                     string couponNumber = couponNumberElements[i].Text;
-                    if (couponNumberDict.ContainsKey(couponNumber))
+                    if (is_first)
                     {
-                        if (is_first)
+                        if (!couponNumberDict.ContainsKey(couponNumber))
                         {
+                            logger.Info("添加优惠券号码：" + couponNumber + " 到couponNumberDict字典中");  // 如果优惠券号码已存在，则打印提示信息
                             couponNumberDict.Add(couponNumber, "已存在");  // 如果是第一次统计，则将记录添加到coupon_number_dic字典中
                         }
-                        else
+                    }
+                    else
+                    {
+                        if (!couponNumberDict.ContainsKey(couponNumber) && !couponNumberExtendDict.ContainsKey(couponNumber))
                         {
-                            couponNumberExtendDict.Add(couponNumber, "已存在");  // 如果不是第一次统计，则将记录添加到coupon_number_extend_dic字典中
+                            logger.Info("添加优惠券号码：" + couponNumber + " 到couponNumberExtendDict字典中");  // 如果优惠券号码已存在，则打印提示信息
+                            couponNumberExtendDict.Add(couponNumber, "已存在");  // 如果不是第一次统计，则将记录添加到coupon_number_extend
                         }
                     }
                 }
@@ -90,9 +97,9 @@ namespace appiumtest.Page
 
                 // 滑动“小吃券”列表
                 swipe_screen((((lowerRightX + topLeftX) * 0.5) / screenWidth),
-                        (lowerRightY * 0.9) / screenHeight,
+                        (lowerRightY * 0.85) / screenHeight,
                          (((lowerRightX + topLeftX) * 0.5) / screenWidth),
-                           ((lowerRightY * 0.5) / screenHeight), driver);
+                           ((lowerRightY * 0.6) / screenHeight), driver);
 
                 //// 清空列表
                 //couponNumberElements.Clear();
@@ -108,7 +115,7 @@ namespace appiumtest.Page
          * 定义了积分兑换页面相关的场景
          */
         // 获得"积分兑换商品"列表的最后一个元素的名称
-        public string GetLastItemName(AndroidDriver driver)
+        public static string GetLastItemName(AndroidDriver driver)
         {
             /*
              * 获取"积分兑换商品"列表的最后一个元素的名称

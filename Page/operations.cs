@@ -463,7 +463,7 @@ namespace appiumtest.Page
              */
             logger.Info("==========get_goods_price==========");
             IList<IWebElement> eles = get_exists_elements(CashInterfacePageLocators.GoodsList, driver);
-            return get_exists_element(CashInterfacePageLocators.GoodsPriceText, driver, eles[index]).Text;
+            return get_exists_element(CashInterfacePageLocators.GoodsPriceText, driver, eles[index]).Text.Split('￥')[^1];
         }
 
         // 获取“订单”视图框的大小，并返回该视图框左上角和右下角的坐标值，即"[480,92][1440,1080]"
@@ -607,10 +607,10 @@ namespace appiumtest.Page
                     (lowerRightY * 0.5) / screenHeight,
                     driver);
 
-                // 清空列表
-                productIdsInOrderEles.Clear();
-                productNamesInOrderEles.Clear();
-                productPricesInOrderEles.Clear();
+                //// 清空列表
+                //productIdsInOrderEles.Clear();
+                //productNamesInOrderEles.Clear();
+                //productPricesInOrderEles.Clear();
             }
             SortedDictionary<string, string>[] result = { productNamesInOrder, productPricesInOrder };
             return result;
@@ -1604,10 +1604,20 @@ namespace appiumtest.Page
             /*
              * 点击“积分兑换商品”列表中，指定序号的元素
              * 
-             * :param int itemNo: 元素序号（从1开始）
+             * :param int itemNo: 元素序号（从0开始）
              */
             logger.Info("==========click_point_exchange_item==========");
             IList<IWebElement> eles = get_exists_elements(PointExchangePageLocators.PointsExchangeViewElem, driver);
+            if (itemNo == -1)
+            {
+                itemNo = eles.Count - 1;
+            }
+            if (itemNo >= eles.Count)
+            {
+                throw new Exception("元素序号超出范围");
+            }
+
+
             eles[itemNo].Click();
         }
 
@@ -1617,10 +1627,19 @@ namespace appiumtest.Page
             /*
              * 获取“积分兑换商品”列表中，指定序号元素的积分值
              * 
-             * :param int itemNo: 元素序号（从1开始）
+             * :param int itemNo: 元素序号（从0开始）
              */
             logger.Info("==========get_point_exchange_item_integral==========");
             IList<IWebElement> eles = GetPointExchangeList(driver);
+            if (itemNo == -1)
+            {
+                itemNo = eles.Count - 1;
+            }
+            if (itemNo >= eles.Count)
+            {
+                throw new Exception("元素序号超出范围");
+            }
+
             IWebElement ele = get_exists_element(PointExchangePageLocators.PointsExchangeItemPoints, driver, eles[itemNo]);
             return ele.Text;
         }
@@ -1631,10 +1650,19 @@ namespace appiumtest.Page
             /*
              * 获取"积分兑换商品"列表中,指定序号元素的品名
              * 
-             * :param int itemNo: 元素序号（从1开始）
+             * :param int itemNo: 元素序号（从0开始）
              */
             logger.Info("==========get_point_exchange_item_title==========");
             IList<IWebElement> eles = GetPointExchangeList(driver);
+            if (itemNo == -1)
+            {
+                itemNo = eles.Count - 1;
+            }
+            if (itemNo >= eles.Count)
+            {
+                throw new Exception("元素序号超出范围");
+            }
+
             IWebElement ele = get_exists_element(PointExchangePageLocators.PointsExchangeItemName, driver, eles[itemNo]);
             return ele.Text;
         }

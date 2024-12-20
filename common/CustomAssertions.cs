@@ -112,5 +112,26 @@ namespace appiumtest.common
                 //throw; // 重新抛出异常
             }
         }
+
+        public static void AssertTrue(dynamic value, AndroidDriver driver)
+        {
+            /*
+             * 自定义断言方法，用于判断变量是否为真，并提供截图功能
+             */
+            try
+            {
+                Assert.That(value, Is.True);
+            }
+            catch (AssertionException ex)
+            {
+                // 这里可以执行截图、日志记录等操作
+                Console.WriteLine($"Assertion failed: {ex.Message}");
+
+                // 调用基类的方法生成截图
+                BasePage.generate_screenshot(3, driver, "AssertTrueFaied");
+
+                //throw; // 重新抛出异常
+            }
+        }
     }
 }
