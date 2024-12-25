@@ -33,7 +33,13 @@ namespace appiumtest.testcase
 
 
             // 点击"自用品(收银用)"分类按钮
+            string categroyName = CashInterfacePageOpn.ClickCategoryBtn(3, _driver);
 
+            // 从当前屏幕所显示的菜品中随机选择两个商品
+            SortedDictionary<string, string> productNames = new SortedDictionary<string, string>();
+            SortedDictionary<string, string> productPrices = new SortedDictionary<string, string>();
+            Random random = new Random();
+            int actualProductCount = Math.Min(19, )
         }
     }
 }
